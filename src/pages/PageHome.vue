@@ -37,65 +37,71 @@
       color="grey-2"/>
 
     <q-list separator>
-      <q-item
-      v-for="qweet in qweets"
-      :key="qweet.id"
-      class="q-py-md">
-        <q-item-section avatar top>
-          <q-avatar size="xl">
-            <img src="https://cdn.quasar.dev/img/avatar2.jpg">
-          </q-avatar>
-        </q-item-section>
+      <transition-group
+        appear
+        enter-active-class="animated fadeIn slow"
+        leave-active-class="animated fadeOut slow"
+      >
+        <q-item
+        v-for="qweet in qweets"
+        :key="qweet.id"
+        class="q-py-md qweet-separator">
+          <q-item-section avatar top>
+            <q-avatar size="xl">
+              <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+            </q-avatar>
+          </q-item-section>
 
-        <q-item-section>
-          <q-item-label class="text-subtitle1">
-            <strong>
-              Vin
-            </strong>
-            <span class="text-grey-7">
-              @purrup
-            </span>
-          </q-item-label>
-          <q-item-label class="qweet-content">
-            {{ qweet.content }}
-          </q-item-label>
-          <div class="qweet-icons row justify-between q-mt-sm">
-            <q-btn
-              color="grey"
-              size="sm"
-              icon="far fa-comment"
-              flat
-              round
-            />
-            <q-btn
-              color="grey"
-              size="sm"
-              icon="fas fa-retweet"
-              flat
-              round
-            />
-            <q-btn
-              color="grey"
-              size="sm"
-              icon="far fa-heart"
-              flat
-              round
-            />
-            <q-btn
-              @click="deleteQweet(qweet.id)"
-              color="grey"
-              size="sm"
-              icon="fas fa-trash"
-              flat
-              round
-            />
-          </div>
-        </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-subtitle1">
+              <strong>
+                Vin
+              </strong>
+              <span class="text-grey-7">
+                @purrup
+              </span>
+            </q-item-label>
+            <q-item-label class="qweet-content">
+              {{ qweet.content }}
+            </q-item-label>
+            <div class="qweet-icons row justify-between q-mt-sm">
+              <q-btn
+                color="grey"
+                size="sm"
+                icon="far fa-comment"
+                flat
+                round
+              />
+              <q-btn
+                color="grey"
+                size="sm"
+                icon="fas fa-retweet"
+                flat
+                round
+              />
+              <q-btn
+                color="grey"
+                size="sm"
+                icon="far fa-heart"
+                flat
+                round
+              />
+              <q-btn
+                @click="deleteQweet(qweet.id)"
+                color="grey"
+                size="sm"
+                icon="fas fa-trash"
+                flat
+                round
+              />
+            </div>
+          </q-item-section>
 
-        <q-item-section side top>
-          {{ qweet.date |  relativeDate }}
-        </q-item-section>
-      </q-item>
+          <q-item-section side top>
+            {{ qweet.date |  relativeDate }}
+          </q-item-section>
+        </q-item>
+      </transition-group>
     </q-list>
   </q-page>
 </template>
@@ -162,4 +168,7 @@ export default {
 .qweet-icons
   margin-left: -5px
   max-width: 30%
+
+.qweet-separator:not(:first-child)
+  border-top: 1px solid rgba(0, 0, 0, 0.12)
 </style>

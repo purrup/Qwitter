@@ -35,9 +35,11 @@
       size="10px"
       color="grey-2"/>
 
-    <q-list>
-
-      <q-item class="q-py-md">
+    <q-list separator>
+      <q-item
+      v-for="qweet in qweets"
+      :key="qweet.date"
+      class="q-py-md">
         <q-item-section avatar top>
           <q-avatar size="xl">
             <img src="https://cdn.quasar.dev/img/avatar2.jpg">
@@ -54,9 +56,7 @@
             </span>
           </q-item-label>
           <q-item-label class="qweet-content">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non?
-
-            Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non?
+            {{ qweet.content }}
           </q-item-label>
           <div class="qweet-icons row justify-between q-mt-sm">
             <q-btn
@@ -91,7 +91,7 @@
         </q-item-section>
 
         <q-item-section side top>
-          1 min ago
+          {{ qweet.date |  relativeDate }}
         </q-item-section>
       </q-item>
     </q-list>
@@ -99,11 +99,27 @@
 </template>
 
 <script>
+import { formatDistance } from 'date-fns'
 export default {
   name: 'PageHome',
   data () {
     return {
-      newQwteetContent: ''
+      newQwteetContent: '',
+      qweets: [
+        {
+          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+          date: 1615208104428
+        },
+        {
+          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+          date: 1615208202055
+        }
+      ]
+    }
+  },
+  filters: {
+    relativeDate (value) {
+      return formatDistance(value, new Date())
     }
   }
 }

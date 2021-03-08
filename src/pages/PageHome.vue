@@ -39,7 +39,7 @@
     <q-list separator>
       <q-item
       v-for="qweet in qweets"
-      :key="qweet.date"
+      :key="qweet.id"
       class="q-py-md">
         <q-item-section avatar top>
           <q-avatar size="xl">
@@ -82,6 +82,7 @@
               round
             />
             <q-btn
+              @click="deleteQweet(qweet.id)"
               color="grey"
               size="sm"
               icon="fas fa-trash"
@@ -108,10 +109,12 @@ export default {
       newQwteetContent: '',
       qweets: [
         {
+          id: this.uuid(),
           content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
           date: 1615208104428
         },
         {
+          id: this.uuid(),
           content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
           date: 1615208202055
         }
@@ -121,11 +124,18 @@ export default {
   methods: {
     addNewQweet () {
       const newQweet = {
+        id: this.uuid(),
         content: this.newQwteetContent,
         date: Date.now()
       }
       this.qweets.unshift(newQweet)
       this.newQwteetContent = ''
+    },
+    deleteQweet (qweetId) {
+      this.qweets = this.qweets.filter(qweet => qweet.id !== qweetId)
+    },
+    uuid () { // 建立id
+      return Math.random().toString(16).slice(2)
     }
   },
   filters: {

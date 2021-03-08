@@ -46,7 +46,7 @@
         >
           <q-item
           v-for="qweet in qweets"
-          :key="qweet.date"
+          :key="qweet.id"
           class="q-py-md qweet-separator">
             <q-item-section avatar top>
               <q-avatar size="xl">
@@ -153,7 +153,6 @@ export default {
   methods: {
     addNewQweet () {
       const newQweet = {
-        id: this.uuid(),
         content: this.newQwteetContent,
         date: Date.now()
       }
@@ -167,10 +166,11 @@ export default {
       this.newQwteetContent = ''
     },
     deleteQweet (qweetId) {
-      this.qweets = this.qweets.filter(qweet => qweet.id !== qweetId)
-    },
-    uuid () { // 建立id
-      return Math.random().toString(16).slice(2)
+      db.collection('qweets').doc(qweetId).delete().then(() => {
+        console.log('Document successfully deleted!')
+      }).catch((error) => {
+        console.error('Error removing document: ', error)
+      })
     }
   },
   filters: {
@@ -182,7 +182,9 @@ export default {
     db.collection('qweets').orderBy('date').onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
         const qweetChange = change.doc.data()
+        qweetChange.id = change.doc.id
         if (change.type === 'added') {
+          // console.log('Add qweet: ', qweetChange)
           this.qweets.unshift(qweetChange)
         }
         if (change.type === 'modified') {
@@ -190,6 +192,7 @@ export default {
         }
         if (change.type === 'removed') {
           console.log('Removed qweet: ', qweetChange)
+          this.qweets = this.qweets.filter(qweet => qweet.id !== qweetChange.id)
         }
       })
     })

@@ -157,7 +157,13 @@ export default {
         content: this.newQwteetContent,
         date: Date.now()
       }
-      this.qweets.unshift(newQweet)
+      db.collection('qweets').add(newQweet)
+        .then((docRef) => {
+          console.log('Document written with ID: ', docRef.id)
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error)
+        })
       this.newQwteetContent = ''
     },
     deleteQweet (qweetId) {

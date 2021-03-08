@@ -46,7 +46,7 @@
         >
           <q-item
           v-for="qweet in qweets"
-          :key="qweet.id"
+          :key="qweet.date"
           class="q-py-md qweet-separator">
             <q-item-section avatar top>
               <q-avatar size="xl">
@@ -109,42 +109,44 @@
 
 <script>
 import { formatDistance } from 'date-fns'
+import db from 'src/boot/firebase.js'
+
 export default {
   name: 'PageHome',
   data () {
     return {
       newQwteetContent: '',
       qweets: [
-        {
-          id: this.uuid(),
-          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-          date: 1615208104428
-        },
-        {
-          id: this.uuid(),
-          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-          date: 1615208202055
-        },
-        {
-          id: this.uuid(),
-          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-          date: 1615208104428
-        },
-        {
-          id: this.uuid(),
-          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-          date: 1615208104428
-        },
-        {
-          id: this.uuid(),
-          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-          date: 1615208104428
-        },
-        {
-          id: this.uuid(),
-          content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-          date: 1615208104428
-        }
+        // {
+        //   id: this.uuid(),
+        //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+        //   date: 1615208104428
+        // },
+        // {
+        //   id: this.uuid(),
+        //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+        //   date: 1615208202055
+        // },
+        // {
+        //   id: this.uuid(),
+        //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+        //   date: 1615208104428
+        // },
+        // {
+        //   id: this.uuid(),
+        //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+        //   date: 1615208104428
+        // },
+        // {
+        //   id: this.uuid(),
+        //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+        //   date: 1615208104428
+        // },
+        // {
+        //   id: this.uuid(),
+        //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
+        //   date: 1615208104428
+        // }
       ]
     }
   },
@@ -169,6 +171,22 @@ export default {
     relativeDate (value) {
       return formatDistance(value, new Date())
     }
+  },
+  mounted () {
+    db.collection('qweets').orderBy('date').onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        const qweetChange = change.doc.data()
+        if (change.type === 'added') {
+          this.qweets.unshift(qweetChange)
+        }
+        if (change.type === 'modified') {
+          console.log('Modified qweet: ', qweetChange)
+        }
+        if (change.type === 'removed') {
+          console.log('Removed qweet: ', qweetChange)
+        }
+      })
+    })
   }
 }
 </script>

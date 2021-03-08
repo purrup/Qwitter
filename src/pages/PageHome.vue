@@ -34,6 +34,67 @@
       class="divider"
       size="10px"
       color="grey-2"/>
+
+    <q-list>
+
+      <q-item class="q-py-md">
+        <q-item-section avatar top>
+          <q-avatar size="xl">
+            <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+          </q-avatar>
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label class="text-subtitle1">
+            <strong>
+              Vin
+            </strong>
+            <span class="text-grey-7">
+              @purrup
+            </span>
+          </q-item-label>
+          <q-item-label class="qweet-content">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non?
+
+            Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non?
+          </q-item-label>
+          <div class="qweet-icons row justify-between q-mt-sm">
+            <q-btn
+              color="grey"
+              size="sm"
+              icon="far fa-comment"
+              flat
+              round
+            />
+            <q-btn
+              color="grey"
+              size="sm"
+              icon="fas fa-retweet"
+              flat
+              round
+            />
+            <q-btn
+              color="grey"
+              size="sm"
+              icon="far fa-heart"
+              flat
+              round
+            />
+            <q-btn
+              color="grey"
+              size="sm"
+              icon="fas fa-trash"
+              flat
+              round
+            />
+          </div>
+        </q-item-section>
+
+        <q-item-section side top>
+          1 min ago
+        </q-item-section>
+      </q-item>
+    </q-list>
   </q-page>
 </template>
 
@@ -57,4 +118,11 @@ export default {
   border-top: 1px solid
   border-bottom: 1px solid
   border-color: $grey-4
+
+.qweet-content
+ white-space: pre-line
+
+.qweet-icons
+  margin-left: -5px
+  max-width: 30%
 </style>

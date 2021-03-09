@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "../../src/css/quasar.variables.sass"
+    ],
+    "names": [],
+    "file": "quasar.variables.css"
+}

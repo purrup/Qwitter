@@ -1,6 +1,6 @@
 <template>
   <q-page class="relative-position">
-    <q-scroll-area class="absolute fullscreen">
+    <q-scroll-area class="absolute full-width full-height">
 
       <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
         <div class="col">
@@ -203,7 +203,7 @@ export default {
         const qweetChange = change.doc.data()
         qweetChange.id = change.doc.id
         if (change.type === 'added') {
-          // console.log('Add qweet: ', qweetChange)
+          console.log('Add qweet: ', qweetChange)
           this.qweets.unshift(qweetChange)
         }
         if (change.type === 'modified') {

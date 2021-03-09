@@ -83,9 +83,10 @@
                   round
                 />
                 <q-btn
-                  color="grey"
+                  @click="toggleLiked(qweet)"
+                  :color="qweet.liked ? 'pink' : 'grey'"
                   size="sm"
-                  icon="far fa-heart"
+                  :icon="qweet.liked ? 'fas fa-heart' : 'far fa-heart' "
                   flat
                   round
                 />
@@ -120,13 +121,15 @@ export default {
         // {
         //   id: this.uuid(),
         //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-        //   date: 1615208104428
+        //   date: 1615208104428,
+        //   liked: false
         // },
         // {
         //   id: this.uuid(),
         //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
-        //   date: 1615208202055
-        // },
+        //   date: 1615208202055,
+        //   liked: true
+        // }
         // {
         //   id: this.uuid(),
         //   content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, magni repellendus! Repellendus non ipsa, laudantium omnis sunt, repellat dicta voluptas cum provident repudiandae architecto inventore. Reprehenderit error ducimus officiis non',
@@ -151,10 +154,15 @@ export default {
     }
   },
   methods: {
+    uuid () {
+      return Math.random().toString(16).slice(2)
+    },
     addNewQweet () {
       const newQweet = {
+        // id: this.uuid(),
         content: this.newQwteetContent,
-        date: Date.now()
+        date: Date.now(),
+        liked: false
       }
       db.collection('qweets').add(newQweet)
         .then((docRef) => {
@@ -171,6 +179,17 @@ export default {
       }).catch((error) => {
         console.error('Error removing document: ', error)
       })
+    },
+    toggleLiked (qweet) {
+      db.collection('qweets').doc(qweet.id).update({
+        liked: !qweet.liked
+      })
+        .then(() => {
+          console.log('Document succefully updated!')
+        })
+        .catch((error) => {
+          console.error('Error updating document: ', error)
+        })
     }
   },
   filters: {
@@ -189,6 +208,8 @@ export default {
         }
         if (change.type === 'modified') {
           console.log('Modified qweet: ', qweetChange)
+          const targetQweet = this.qweets.find(qweet => qweet.id === qweetChange.id)
+          Object.assign(targetQweet, qweetChange)
         }
         if (change.type === 'removed') {
           console.log('Removed qweet: ', qweetChange)
